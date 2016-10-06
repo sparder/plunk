@@ -10,12 +10,19 @@
 	</parent>
 	<artifactId>remoting</artifactId>
 	<name>${project.artifactId}</name>
-
+	<properties>
+		<netty.version>4.0.36.Final</netty.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.sparder.plunk</groupId>
 			<artifactId>common</artifactId>
 			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>${netty.version}</version>
 		</dependency>
 	</dependencies>
 
