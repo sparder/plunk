@@ -20,6 +20,11 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.sparder.plunk</groupId>
+			<artifactId>config</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
 			<version>${netty.version}</version>
