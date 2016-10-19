@@ -10,12 +10,19 @@
 	</parent>
 	<artifactId>serialization</artifactId>
 	<name>${project.artifactId}</name>
-
+	<properties>
+		<hessian.version>4.0.38</hessian.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.sparder.plunk</groupId>
 			<artifactId>common</artifactId>
 			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.caucho</groupId>
+			<artifactId>hessian</artifactId>
+			<version>${hessian.version}</version>
 		</dependency>
 	</dependencies>
 
