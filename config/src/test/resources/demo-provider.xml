@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:plunk="http://www.sparder.com/schema/plunk"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.sparder.com/schema/plunk
+           http://www.sparder.com/schema/plunk.xsd">
+
+	<bean id="demoService" class="com.sparder.plunk.config.demo.MyServiceImpl" />
+	<plunk:service id="myService" interface="com.sparder.plunk.config.demo.MyService" ref="demoService" version="0.1" group="domain" delay="10" deprecated="0" executes="20"/>
+
+</beans>

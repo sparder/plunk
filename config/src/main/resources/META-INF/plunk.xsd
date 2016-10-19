@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.sparder.com/schema/plunk"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:beans="http://www.springframework.org/schema/beans"
+			xmlns:tool="http://www.springframework.org/schema/tool"
+			targetNamespace="http://www.sparder.com/schema/plunk">
+
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+	<xsd:import namespace="http://www.springframework.org/schema/beans"/>
+	<xsd:import namespace="http://www.springframework.org/schema/tool"/>
+
+	<xsd:annotation>
+		<xsd:documentation><![CDATA[ Namespace support for the plunk services provided by plunk framework. ]]></xsd:documentation>
+	</xsd:annotation>
+
+
+	<xsd:complexType name="abstractReferenceType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+
+				<xsd:attribute name="version" type="xsd:string" use="optional" default="0.0.0">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service version. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="group" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service group. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+
+				<xsd:attribute name="reconnect" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ remoting reconnect timer. false represent close reconnect. integer represent interval(ms) .default true(2000ms).]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="abstractServiceType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+
+                <xsd:attribute name="register" type="xsd:string" use="optional">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[ The service can be register to registry. ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+				<xsd:attribute name="version" type="xsd:string" use="optional" default="0.0.0">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service version. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="group" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service group. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="deprecated" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ whether the service is deprecated. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="delay" type="xsd:string" use="optional" default="0">
+	               	<xsd:annotation>
+	               		<xsd:documentation>
+	               			<![CDATA[ The service export delay millisecond. ]]>
+	               		</xsd:documentation>
+	               	</xsd:annotation>
+	            </xsd:attribute>
+
+
+
+				<xsd:attribute name="executes" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service allow execute requests. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+
+	
+	<xsd:complexType name="referenceType">
+		<xsd:complexContent>
+			<xsd:extension base="abstractReferenceType">
+				<xsd:attribute name="interface" type="xsd:token" use="required">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service interface class name. ]]></xsd:documentation>
+						<xsd:appinfo>
+							<tool:annotation>
+								<tool:expected-type type="java.lang.Class"/>
+							</tool:annotation>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="url" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ Provider list url. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="client" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ Protocol transport client type. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="protocol" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service protocol. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+
+	<xsd:complexType name="serviceType">
+		<xsd:complexContent>
+			<xsd:extension base="abstractServiceType">
+
+				<xsd:attribute name="interface" type="xsd:token" use="required">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ Defines the interface to advertise for this service in the service registry. ]]></xsd:documentation>
+						<xsd:appinfo>
+							<tool:annotation>
+								<tool:expected-type type="java.lang.Class"/>
+							</tool:annotation>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="ref" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service implementation instance bean id. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="class" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service implementation class name. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="path" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ The service path. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="provider" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation><![CDATA[ Deprecated. Replace to protocol. ]]></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+
+	
+	<xsd:element name="service" type="serviceType">
+		<xsd:annotation> 
+			<xsd:documentation><![CDATA[ Export service config ]]></xsd:documentation> 
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="reference" type="referenceType">
+		<xsd:annotation> 
+			<xsd:documentation><![CDATA[ Reference service config ]]></xsd:documentation> 
+		</xsd:annotation>
+	</xsd:element>
+	
+</xsd:schema>
