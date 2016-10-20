@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.sparder.plunk</groupId>
-			<artifactId>rpc</artifactId>
+			<artifactId>remoting</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>

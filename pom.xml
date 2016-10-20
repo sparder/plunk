@@ -20,8 +20,14 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
-	
+
+	<repositories>
+		<!--<repository>
+			<id>nexus-public</id>
+			<name>nexus-public</name>
+			<url>http://maven.fn.com/nexus/content/groups/public/</url>
+		</repository>-->
+	</repositories>
 
 	<build>
 		<plugins>
