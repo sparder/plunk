@@ -63,6 +63,8 @@ public class NettyClient implements Client {
 
     @Override
     public void syncSend(Object content) {
+
+        //content must codec
         channelFuture.channel().writeAndFlush(content);
     }
 
