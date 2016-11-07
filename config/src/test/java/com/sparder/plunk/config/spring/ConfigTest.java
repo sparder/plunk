@@ -2,6 +2,7 @@ package com.sparder.plunk.config.spring; /**
  * 
  */
 
+import com.sparder.plunk.config.ApplicationConfig;
 import com.sparder.plunk.config.ServiceConfig;
 import com.sparder.plunk.config.ReferenceConfig;
 import com.sparder.plunk.config.demo.DemoAction;
@@ -25,6 +26,16 @@ public class ConfigTest
 
 	public static void main(String[] args)
 	{
+		ApplicationConfig applicationConfig = (ApplicationConfig) context.getBean("demoApp");
+
+
+
+		System.out.println(applicationConfig.getName());
+
+		System.out.println(applicationConfig.getRegistries());
+		System.out.println(applicationConfig.getRegistries().get(0).getAddress());
+		System.out.println(applicationConfig.getRegistries().get(0).getAddress());
+
 		ServiceConfig d = (ServiceConfig) context.getBean("myService");
 		System.out.println(d);
 		System.out.println(d.getVersion());
@@ -38,6 +49,22 @@ public class ConfigTest
 
 		MyService e = (MyServiceImpl) context.getBean("demoService");
 		System.out.println(e);
+	}
+
+	@Test
+	public void testApplicationConfigClass() {
+		ApplicationConfig applicationConfig = (ApplicationConfig) context.getBean("demoApp");
+		try {
+
+			assertNotNull(applicationConfig);
+			assertEquals("myApp", applicationConfig.getName());
+
+			assertNotNull(applicationConfig.getRegistries());
+			assertEquals("10.250.144.114", applicationConfig.getRegistries().get(0).getAddress());
+			assertEquals("10.250.144.115", applicationConfig.getRegistries().get(1).getAddress());
+		} finally {
+
+		}
 	}
 
 	@Test

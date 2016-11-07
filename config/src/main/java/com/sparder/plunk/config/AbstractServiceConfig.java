@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2011 Alibaba Group.
+ * Copyright 2016-2026 Sparder Group.
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,19 +22,10 @@ package com.sparder.plunk.config;
  * @author weimin.sun
  * @
  */
-public abstract class AbstractServiceConfig {
+public abstract class AbstractServiceConfig extends AbstractConfig {
 
     private static final long serialVersionUID = 1L;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    protected String id;
 
     // 服务版本
     private String version;

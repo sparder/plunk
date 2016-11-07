@@ -22,9 +22,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+import com.sparder.plunk.config.ApplicationConfig;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
+import org.springframework.beans.factory.config.TypedStringValue;
+import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.BeanDefinitionParser;
@@ -35,7 +38,7 @@ import org.w3c.dom.NodeList;
 
 import com.sparder.plunk.config.ServiceConfig;
 import com.sparder.plunk.config.ReferenceConfig;
-
+import com.sparder.plunk.config.RegistryConfig;
 /**
  * AbstractBeanDefinitionParser
  *
@@ -91,7 +94,7 @@ public class PlunkBeanDefinitionParser implements BeanDefinitionParser {
             beanDefinition.getPropertyValues().addPropertyValue("id", id);
         }
 
-        if (ServiceConfig.class.equals(beanClass) || ReferenceConfig.class.equals(beanClass)) {
+        if (ServiceConfig.class.equals(beanClass) || ReferenceConfig.class.equals(beanClass) || RegistryConfig.class.equals(beanClass) || ApplicationConfig.class.equals(beanClass)) {
             String className = element.getAttribute("class");
             if (className != null && className.length() > 0) {
                 RootBeanDefinition classDefinition = new RootBeanDefinition();
@@ -102,8 +105,9 @@ public class PlunkBeanDefinitionParser implements BeanDefinitionParser {
             }
         }
 
+
         //Set<String> props = new HashSet<String>();
-        //ManagedMap parameters = null;
+        ManagedMap parameters = null;
         for (Method setter : beanClass.getMethods()) {
             String name = setter.getName();
             if (name.length() > 3 && name.startsWith("set")
@@ -127,7 +131,7 @@ public class PlunkBeanDefinitionParser implements BeanDefinitionParser {
                     continue;
                 }
                 if ("parameters".equals(property)) {
-                    //parameters = parseParameters(element.getChildNodes(), beanDefinition);
+                    parameters = parseParameters(element.getChildNodes(), beanDefinition);
                 } else if ("methods".equals(property)) {
                     //parseMethods(id, element.getChildNodes(), beanDefinition, parserContext);
                 } else if ("arguments".equals(property)) {
@@ -142,30 +146,39 @@ public class PlunkBeanDefinitionParser implements BeanDefinitionParser {
                         value = value.trim();
                         if (value.length() > 0) {
                             {
+                                if ("registry".equals(property) && RegistryConfig.NO_AVAILABLE.equalsIgnoreCase(value)) {
+                                    RegistryConfig registryConfig = new RegistryConfig();
+                                    registryConfig.setAddress(RegistryConfig.NO_AVAILABLE);
+                                    beanDefinition.getPropertyValues().addPropertyValue(property, registryConfig);
+                                } else if ("registries".equals(property) && value.indexOf(',') != -1) {
+                                    parseMultiRef("registries", value, beanDefinition, parserContext);
 
-                                Object reference;
-                                if (isPrimitive(type)) {
-                                    if ("async".equals(property) && "false".equals(value)
-                                            || "timeout".equals(property) && "0".equals(value)
-                                            || "delay".equals(property) && "0".equals(value)
-                                            || "version".equals(property) && "0.0.0".equals(value)
-                                            || "stat".equals(property) && "-1".equals(value)
-                                            || "reliable".equals(property) && "false".equals(value)) {
-                                        // å…¼å®¹æ—§ç‰ˆæœ¬xsdä¸­çš„defaultå€¼
-                                        value = null;
-                                    }
-                                    reference = value;
                                 } else {
-                                    if ("ref".equals(property) && parserContext.getRegistry().containsBeanDefinition(value)) {
-                                        BeanDefinition refBean = parserContext.getRegistry().getBeanDefinition(value);
-                                        if (!refBean.isSingleton()) {
-                                            throw new IllegalStateException("The exported service ref " + value + " must be singleton! Please set the " + value + " bean scope to singleton, eg: <bean id=\"" + value + "\" scope=\"singleton\" ...>");
-                                        }
-                                    }
-                                    reference = new RuntimeBeanReference(value);
-                                }
-                                beanDefinition.getPropertyValues().addPropertyValue(property, reference);
 
+                                    Object reference;
+                                    if (isPrimitive(type)) {
+                                        if ("async".equals(property) && "false".equals(value)
+                                                || "timeout".equals(property) && "0".equals(value)
+                                                || "delay".equals(property) && "0".equals(value)
+                                                || "version".equals(property) && "0.0.0".equals(value)
+                                                || "stat".equals(property) && "-1".equals(value)
+                                                || "reliable".equals(property) && "false".equals(value)) {
+                                            // å…¼å®¹æ—§ç‰ˆæœ¬xsdä¸­çš„defaultå€¼
+                                            value = null;
+                                        }
+                                        reference = value;
+                                    } else {
+                                        if ("ref".equals(property) && parserContext.getRegistry().containsBeanDefinition(value)) {
+                                            BeanDefinition refBean = parserContext.getRegistry().getBeanDefinition(value);
+                                            if (!refBean.isSingleton()) {
+                                                throw new IllegalStateException("The exported service ref " + value + " must be singleton! Please set the " + value + " bean scope to singleton, eg: <bean id=\"" + value + "\" scope=\"singleton\" ...>");
+                                            }
+                                        }
+                                        reference = new RuntimeBeanReference(value);
+                                    }
+                                    beanDefinition.getPropertyValues().addPropertyValue(property, reference);
+
+                                }
                             }
                         }
                     }
@@ -183,6 +196,23 @@ public class PlunkBeanDefinitionParser implements BeanDefinitionParser {
                 || cls == Long.class || cls == Float.class || cls == Double.class
                 || cls == String.class || cls == Date.class || cls == Class.class;
     }
+
+    private static void parseMultiRef(String property, String value, RootBeanDefinition beanDefinition,
+                                      ParserContext parserContext) {
+        String[] values = value.split("\\s*[,]+\\s*");
+        ManagedList list = null;
+        for (int i = 0; i < values.length; i++) {
+            String v = values[i];
+            if (v != null && v.length() > 0) {
+                if (list == null) {
+                    list = new ManagedList();
+                }
+                list.add(new RuntimeBeanReference(v));
+            }
+        }
+        beanDefinition.getPropertyValues().addPropertyValue(property, list);
+    }
+
 
     private static void parseProperties(NodeList nodeList, RootBeanDefinition beanDefinition) {
         if (nodeList != null && nodeList.getLength() > 0) {
@@ -209,6 +239,31 @@ public class PlunkBeanDefinitionParser implements BeanDefinitionParser {
         }
     }
 
+    private static ManagedMap parseParameters(NodeList nodeList, RootBeanDefinition beanDefinition) {
+        if (nodeList != null && nodeList.getLength() > 0) {
+            ManagedMap parameters = null;
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+                if (node instanceof Element) {
+                    if ("parameter".equals(node.getNodeName())
+                            || "parameter".equals(node.getLocalName())) {
+                        if (parameters == null) {
+                            parameters = new ManagedMap();
+                        }
+                        String key = ((Element) node).getAttribute("key");
+                        String value = ((Element) node).getAttribute("value");
+                        boolean hide = "true".equals(((Element) node).getAttribute("hide"));
+                        if (hide) {
+                            key = Constants.HIDE_KEY_PREFIX + key;
+                        }
+                        parameters.put(key, new TypedStringValue(value, String.class));
+                    }
+                }
+            }
+            return parameters;
+        }
+        return null;
+    }
 
     public static String camelToSplitName(String camelName, String split) {
         if (camelName == null || camelName.length() == 0) {

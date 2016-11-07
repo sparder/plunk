@@ -1,11 +1,10 @@
 package com.sparder.plunk.rpc.protocol.plunk.client;
 
-import com.sparder.plunk.config.Application;
+import com.sparder.plunk.config.ApplicationConfig;
 import com.sparder.plunk.core.Request;
 import com.sparder.plunk.core.Response;
 import com.sparder.plunk.remoting.Client;
 import com.sparder.plunk.remoting.netty.NettyClient;
-import com.sparder.plunk.remoting.netty.NettyClientHandler;
 import com.sparder.plunk.rpc.protocol.Caller;
 
 import java.util.HashMap;
@@ -16,10 +15,10 @@ import java.util.Map;
  */
 public class PlunkCaller implements Caller {
 
-    private Application app;
+    private ApplicationConfig app;
 
     private Map<String,Response> result = new HashMap<>();
-    public PlunkCaller(Application app) {
+    public PlunkCaller(ApplicationConfig app) {
         this.app = app;
     }
     @Override

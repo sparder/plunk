@@ -1,5 +1,5 @@
 /*
- * Copyright 1999-2011 Alibaba Group.
+ * Copyright 2016-2026 Sparder Group.
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,10 @@ package com.sparder.plunk.config;
  * @author weimin.sun
  * @
  */
-public abstract class AbstractReferenceConfig {
+public abstract class AbstractReferenceConfig extends AbstractConfig{
 
     private static final long serialVersionUID = -2786526984373031126L;
 
-    protected String id;
 
     // ======== 引用缺省值，当引用属性未设置时使用该缺省值替代  ========
 
@@ -81,14 +80,6 @@ public abstract class AbstractReferenceConfig {
 
     public void setGroup(String group) {
         this.group = group;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
 }

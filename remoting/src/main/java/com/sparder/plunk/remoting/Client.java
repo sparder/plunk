@@ -1,13 +1,13 @@
 package com.sparder.plunk.remoting;
 
-import com.sparder.plunk.config.Application;
+import com.sparder.plunk.config.ApplicationConfig;
 
 /**
  * Created by ruxing.bao on 2016/10/3.
  */
 public interface Client {
 
-    void start(Application app, Handler handler);
+    void start(ApplicationConfig app, Handler handler);
 
     void syncSend(Object content);
 

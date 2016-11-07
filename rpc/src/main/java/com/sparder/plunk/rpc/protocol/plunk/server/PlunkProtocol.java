@@ -1,6 +1,6 @@
 package com.sparder.plunk.rpc.protocol.plunk.server;
 
-import com.sparder.plunk.config.Application;
+import com.sparder.plunk.config.ApplicationConfig;
 import com.sparder.plunk.remoting.Handler;
 import com.sparder.plunk.remoting.netty.NettyServer;
 import com.sparder.plunk.remoting.Server;
@@ -12,9 +12,9 @@ import com.sparder.plunk.rpc.protocol.AbstractProtocol;
 public class PlunkProtocol extends AbstractProtocol {
 
     private Server server;
-    private Application app;
+    private ApplicationConfig app;
 
-    public  PlunkProtocol(Application app) {
+    public  PlunkProtocol(ApplicationConfig app) {
         this.app = app;
     }
     @Override

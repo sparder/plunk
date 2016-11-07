@@ -7,6 +7,10 @@
            http://www.sparder.com/schema/plunk
            http://www.sparder.com/schema/plunk.xsd">
 
+	<plunk:registry id="demoRegistery1" address="10.250.144.114" port="12801"/>
+    <plunk:registry id="demoRegistery2" address="10.250.144.115" port="12801"/>
+	<plunk:application id="demoApp" registries="demoRegistery1,demoRegistery2"  name="myApp"/>
+
 	<bean id="demoService" class="com.sparder.plunk.config.demo.MyServiceImpl" />
 	<plunk:service id="myService" interface="com.sparder.plunk.config.demo.MyService" ref="demoService" version="0.1" group="domain" delay="10" deprecated="0" executes="20"/>
 

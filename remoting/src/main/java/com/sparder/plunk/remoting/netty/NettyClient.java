@@ -1,6 +1,6 @@
 package com.sparder.plunk.remoting.netty;
 
-import com.sparder.plunk.config.Application;
+import com.sparder.plunk.config.ApplicationConfig;
 import com.sparder.plunk.remoting.Client;
 import com.sparder.plunk.remoting.Handler;
 import io.netty.bootstrap.Bootstrap;
@@ -31,7 +31,7 @@ public class NettyClient implements Client {
     }
 
     @Override
-    public void start(Application app, Handler handler) {
+    public void start(ApplicationConfig app, Handler handler) {
         String host  = "";//app.getHost();l
         int port = 0; //app.getPort();
 

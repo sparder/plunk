@@ -17,6 +17,8 @@ package com.sparder.plunk.config.spring.schema;
 
 import com.sparder.plunk.config.ServiceConfig;
 import com.sparder.plunk.config.ReferenceConfig;
+import com.sparder.plunk.config.ApplicationConfig;
+import com.sparder.plunk.config.RegistryConfig;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
 
@@ -33,9 +35,9 @@ public class PlunkNamespaceHandler extends NamespaceHandlerSupport {
 //	}
 
 	public void init() {
-	    //registerBeanDefinitionParser("application", new DubboBeanDefinitionParser(ApplicationConfig.class, true));
+	    registerBeanDefinitionParser("application", new PlunkBeanDefinitionParser(ApplicationConfig.class, true));
         //registerBeanDefinitionParser("module", new DubboBeanDefinitionParser(ModuleConfig.class, true));
-        //registerBeanDefinitionParser("registry", new DubboBeanDefinitionParser(RegistryConfig.class, true));
+        registerBeanDefinitionParser("registry", new PlunkBeanDefinitionParser(RegistryConfig.class, true));
         //registerBeanDefinitionParser("monitor", new DubboBeanDefinitionParser(MonitorConfig.class, true));
         //registerBeanDefinitionParser("provider", new DubboBeanDefinitionParser(ProviderConfig.class, true));
         //registerBeanDefinitionParser("consumer", new DubboBeanDefinitionParser(ConsumerConfig.class, true));

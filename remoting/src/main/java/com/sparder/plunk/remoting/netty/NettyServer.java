@@ -1,6 +1,6 @@
 package com.sparder.plunk.remoting.netty;
 
-import com.sparder.plunk.config.Application;
+import com.sparder.plunk.config.ApplicationConfig;
 import com.sparder.plunk.remoting.Handler;
 import com.sparder.plunk.remoting.Server;
 import io.netty.bootstrap.ServerBootstrap;
@@ -22,7 +22,7 @@ import io.netty.handler.logging.LoggingHandler;
  */
 public class NettyServer implements Server {
     @Override
-    public void start(Application app, Handler handler) {
+    public void start(ApplicationConfig app, Handler handler) {
         EventLoopGroup mainGroup = new NioEventLoopGroup(1);
         EventLoopGroup subGroup = new NioEventLoopGroup(2 * Runtime.getRuntime().availableProcessors());
         ServerBootstrap server = new ServerBootstrap();
